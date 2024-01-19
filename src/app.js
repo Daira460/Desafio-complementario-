@@ -1,25 +1,22 @@
-import express from "express";
-import mongoose from "mongoose";
-import dotenv from "dotenv";
-import handlebars from "express-handlebars";
-import userRouter from "./routes/user.route.js";
-import courseRouter from "./routes/course.route.js";
-import viewsRouter from "./routes/view.route.js";
-import { __dirname } from "./utils.js";
-dotenv.config();
+import express from 'express'
+import { __dirname } from './utils.js'
+import handlebars from 'express-handlebars'
+import router from './routes/index.js'
+import connectMongo from './db/index.js'
 
-const app = express();
-const PORT = process.env.PORT || 8080;
-const DB_URL = process.env.DB_URL || "mongodb://localhost:27017/ecommerce";
+const app = express()
 
-app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
-app.use(express.static(__dirname + "/public"));
+// Middleware
+app.use(express.json())
+app.use(express.urlencoded({ extended: true }))
+app.use(express.static(__dirname + '/public'))
 
+// Configuración de motor de plantillas Handlebars
+app.engine('handlebars', handlebars.engine())
+app.set('views', __dirname + '/views')
+app.set('view engine', 'handlebars')
 
-app.engine("handlebars", handlebars.engine());
-app.set("views", __dirname + "/views");
-app.set("view engine", "handlebars");
+connectMongo()
+router(app)
 
-app.use("/api/user", userRouter);
-app.use("/api/course", courseRouter);
+export default app
