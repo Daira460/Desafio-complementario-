@@ -1,22 +1,29 @@
-import express from 'express'
-import { __dirname } from './utils.js'
-import handlebars from 'express-handlebars'
-import router from './routes/index.js'
-import connectMongo from './db/index.js'
+// app.js
 
-const app = express()
+import express from 'express';
+import { __dirname } from './utils.js';
+import handlebars from 'express-handlebars';
+import router from './routes/index.js';
+import connectMongo from './db/index.js';
+import { PORT, dbUrl } from './config.js';
+
+const app = express();
 
 // Middleware
-app.use(express.json())
-app.use(express.urlencoded({ extended: true }))
-app.use(express.static(__dirname + '/public'))
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+app.use(express.static(__dirname + '/public'));
 
 // Configuración de motor de plantillas Handlebars
-app.engine('handlebars', handlebars.engine())
-app.set('views', __dirname + '/views')
-app.set('view engine', 'handlebars')
+app.engine('handlebars', handlebars.engine());
+app.set('views', __dirname + '/views');
+app.set('view engine', 'handlebars');
 
-connectMongo()
-router(app)
+// Configuración de la conexión a la base de datos
+connectMongo(dbUrl);
 
-export default app
+// Configuración de las rutas
+router(app);
+
+export default app;
+

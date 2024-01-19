@@ -1,5 +1,5 @@
 import { Server } from 'socket.io'
-import ChatDao from './DAOs/mongodb/chat.dao.js'
+import ChatDao from './src/dao/mongodb/chat.dao.js'
 
 const Chat = new ChatDao()
 

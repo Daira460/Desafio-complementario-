@@ -1,5 +1,5 @@
 import { Router } from 'express'
-import { cartsModel } from '../DAOs/mongodb/models/carts.models.js'
+import { cartsModel } from '../dao/mongodb/models/carts.models.js'
 
 const router = Router()
 

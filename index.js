@@ -1,13 +1,11 @@
-import realTimeServer from './realTimeServer.js'
-import app from './app.js'
-import dotenv from 'dotenv'
-import { PORT } from './config/index.config.js'
 
-dotenv.config()
-
+import realTimeServer from './realTimeServer.js';
+import app from './src/app.js';
+import { PORT } from './config.js';
 
 const httpServer = app.listen(PORT, () => {
-    console.log(`Server running on port ${PORT}`)
-})
+    console.log(`Server running on port ${PORT}`);
+});
 
-realTimeServer(httpServer)
+realTimeServer(httpServer);
+
