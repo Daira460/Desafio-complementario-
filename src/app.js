@@ -5,7 +5,7 @@ import { __dirname } from './utils.js';
 import handlebars from 'express-handlebars';
 import router from './routes/index.js';
 import connectMongo from './db/index.js';
-import { PORT, dbUrl } from './config.js';
+import { PORT, db } from './config/index.config.js';
 
 const app = express();
 
@@ -20,7 +20,7 @@ app.set('views', __dirname + '/views');
 app.set('view engine', 'handlebars');
 
 // Configuración de la conexión a la base de datos
-connectMongo(dbUrl);
+connectMongo(db);
 
 // Configuración de las rutas
 router(app);
