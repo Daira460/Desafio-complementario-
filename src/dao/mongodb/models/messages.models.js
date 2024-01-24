@@ -2,8 +2,15 @@ import mongoose from 'mongoose'
 
 const messagesCollection = 'messages'
 const messagesSchema = new mongoose.Schema({
-    user: String,
+    user: {
+        type: String,
+        unique: true,
+    },
     message: String,
+    createdAt: Date,
+    updatedAt: Date,
 })
 
-export const messagesModel = mongoose.model(messagesCollection, messagesSchema)
+const Message = mongoose.model(messageCollections, messageSchema)
+
+module.exports = Message

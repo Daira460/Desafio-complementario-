@@ -3,27 +3,30 @@ import mongoose from 'mongoose'
 const productsCollection = 'product'
 const productSchema = new mongoose.Schema({
 
-    title: {
-        type: String,
-    },
-    description: {
-        type: String,
-    },
-    category: {
-        type: String,
-    },
-    price: {
-        type: Number,
-    },
-    thumbnail: {
-        type: String,
-    },
+    title: String,
+    description: String,
     code: {
         type: String,
+        unique: true,
     },
-    stock: {
-        type: Number,
-    }
+    price: Number,
+    status: {
+        type: Boolean,
+        default: true
+    },
+    available: {
+        type: Boolean,
+        default: true
+    },
+    stock: Number,
+    category: String,
+    thumbnail: String,
+    createdAt: Date,
+    updatedAt: Date,
 })
 
-export const productsModel = mongoose.model(productsCollection, productSchema)
+productSchema.plugin(mongoosePaginate)
+
+const Product = mongoose.model(productCollections, productSchema)
+
+module.exports = Product
