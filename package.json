@@ -16,6 +16,7 @@
     "express-handlebars": "^7.1.2",
     "mongodb": "^6.3.0",
     "mongoose": "^8.1.0",
+    "mongoose-paginate-v2": "^1.8.0",
     "socket.io": "^4.7.4",
     "sweetalert": "^2.1.2",
     "sweetalert2": "^11.10.3"
