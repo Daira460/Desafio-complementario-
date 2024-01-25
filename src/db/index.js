@@ -1,16 +1,13 @@
-import mongoose from 'mongoose'
-import dotenv from 'dotenv'
-import { db } from '../config/index.config.js'
+import mongoose from 'mongoose';
+import { dbUser, dbPassword, dbHost, dbName } from '../config/index.config.js';
 
-dotenv.config()
-
-const connectMongo = async() => {
+const mongoConnect = async () => {
     try {
-        await mongoose.connect(`mongodb+srv://${db.user}:${db.pass}@${db.host}/${db.name}`)
-        console.log('MongoDB connected')
-    }catch(error) {
-        console.log(error)
+       await mongoose.connect(`mongodb+srv://${dbUser}:${dbPassword}@${dbHost}/${dbName}?retryWrites=true&w=majority`);
+       console.log('DB is connected');
+    } catch (error) {
+        console.log(error);
     }
-}
+};
 
-export default connectMongo
+export default mongoConnect;

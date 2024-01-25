@@ -25,14 +25,15 @@ const cartsSchema = new mongoose.Schema({
     updatedAt: Date,
 })
 
-cartSchema.pre('find', function(){
+cartsSchema.pre('find', function(){
     this.populate('products.product')
 })
 
-cartSchema.pre('findOne', function(){
+cartsSchema.pre('findOne', function(){
     this.populate('products.product')
 })
 
-const Cart = mongoose.model(cartCollections, cartSchema)
+export const cartsModel = mongoose.model(cartsCollection, cartsSchema)
+
 
 module.exports = Cart
