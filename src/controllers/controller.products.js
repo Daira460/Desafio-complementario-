@@ -1,58 +1,53 @@
-import { Router } from 'express'
-import { productsModel } from '../dao/mongodb/models/products.models.js'
+import { Router } from 'express';
+import { productsModel } from '../dao/mongodb/models/products.models.js';
 
-
-const router = Router()
+const router = Router();
 
 router.get('/', async (req, res) => {
-    const products = await productsModel.find()
-    res.json({ message: products })
-})
+    try {
+        const pageSize = 10;
+        const currentPage = parseInt(req.query.page) || 1;
+        const products = await productsModel
+            .find()
+            .skip((currentPage - 1) * pageSize)
+            .limit(pageSize);
 
-router.get('/:id', async (req, res) => {
-    const { id } = req.params
-    const product = await productsModel.findById(id)
-    res.json({ message: product })
-})
+        const totalProducts = await productsModel.countDocuments();
+        const hasMorePages = currentPage * pageSize < totalProducts;
+
+        const hasPrevPag = currentPage > 1;
+        const hasNextPag = hasMorePages;
+        const prevLink = hasPrevPag ? `/productos?page=${currentPage - 1}` : null;
+        const nextLink = hasNextPag ? `/productos?page=${currentPage + 1}` : null;
 
 
-router.post('/', async (req, res) => {
-    const { title, description, category, price, thumbnail, code, stock } = req.body
+        const carritoId = obtenerOGenerarCarritoId(req);
 
-    const newProductInfo = {
-        title,
-        description,
-        category,
-        price,
-        thumbnail,
-        code,
-        stock
+        res.render('productos', {
+            products: products,
+            hasPrevPag: hasPrevPag,
+            hasNextPag: hasNextPag,
+            prevLink: prevLink,
+            nextLink: nextLink,
+            carritoId: carritoId,
+        });
+    } catch (error) {
+        console.error('Error en la ruta /productos:', error);
+        res.status(500).json({ status: 'error', error: 'Internal error' });
+    }
+});
+
+function obtenerOGenerarCarritoId(req) {
+    if (req.session.carritoId) {
+        return req.session.carritoId;
     }
 
-    const newProduct = await productsModel.create(newProductInfo)
-    res.json({ message: 'Product created', newProduct })
-})
+    const nuevoCarritoId = Date.now().toString();
+    req.session.carritoId = nuevoCarritoId;
 
-router.put('/:id', async (req, res) => {
-    const { id } = req.params
-    const { title, description, category, price, thumbnail, code, stock } = req.body
-    const newProductInfo = {
-        title,
-        description,
-        category,
-        price,
-        thumbnail,
-        code,
-        stock
-    }
-    await productsModel.findByIdAndUpdate(id, newProductInfo)
-    res.json({ message: 'Product updated' })
-})
+    return nuevoCarritoId;
+}
 
-router.delete('/:id', async (req, res) => {
-    const { id } = req.params
-    await productsModel.findByIdAndDelete(id)
-    res.json({ message: 'Product deleted' })
-})
+export default router;
 
-export default router
+

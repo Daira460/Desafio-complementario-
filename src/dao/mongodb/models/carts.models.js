@@ -1,4 +1,6 @@
+//cart.models.js
 import mongoose from 'mongoose'
+const products = require ('./products.models')
 
 const cartsCollection = 'cart'
 const cartsSchema = new mongoose.Schema({
@@ -7,7 +9,8 @@ const cartsSchema = new mongoose.Schema({
             {
                 product: {
                     type: mongoose.Schema.Types.ObjectId,
-                    ref: 'product'
+                    ref: 'product',
+                    required: true,
                 },
                 quantity: {
                     type: Number,
