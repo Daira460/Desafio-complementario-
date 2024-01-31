@@ -1,6 +1,5 @@
 //cart.models.js
 import mongoose from 'mongoose'
-const products = require ('./products.models')
 
 const cartsCollection = 'cart'
 const cartsSchema = new mongoose.Schema({
@@ -37,6 +36,3 @@ cartsSchema.pre('findOne', function(){
 })
 
 export const cartsModel = mongoose.model(cartsCollection, cartsSchema)
-
-
-module.exports = Cart
